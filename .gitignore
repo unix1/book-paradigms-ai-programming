@@ -1,3 +1,4 @@
 *.FASL
 *.fasl
+*.kdev4
 *.lisp-temp

@@ -35,7 +35,22 @@
 ;    anywhere within another expression. Example:
 ;    (count-anywhere 'a '(a ((a) b) a)) = 3.
 
+(defun count-anywhere (needle haystack &optional (acc 0))
+  (cond ((and (null (car haystack)) (null (cdr haystack))) acc)
+        ((eql (car haystack) needle) (count-anywhere needle (cdr haystack) (+ 1 acc)))
+        ((listp (car haystack))
+                (count-anywhere needle
+                                (cdr haystack)
+                                (+ acc (count-anywhere needle (car haystack)))))
+        (t (count-anywhere needle (cdr haystack) acc))))
+
 ; 5. Write a function to compute the dot product of two sequences of numbers,
 ;    represented as lists. The dot product is computed by multiplying
 ;    corresponding elements and then adding up the resulting products. Example:
 ;    (dot-product '(10 20) '(3 4)) = 10 x 3 + 20 x 4 = 110
+
+(defun dot-product (nums1 nums2)
+  (reduce #'+
+          (mapcar #'*
+                  nums1
+                  nums2)))
